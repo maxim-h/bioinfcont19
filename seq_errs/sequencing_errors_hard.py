@@ -2,18 +2,26 @@ from math import factorial, floor
 from decimal import *
 
 
-def coverage_probability(b, l, n, k):
+def coverage_probability(b: int, l, n, k) -> float:
     return float(Decimal(factorial(k)) / Decimal((factorial(b)) * Decimal(factorial(k - b))) * Decimal(n ** b) * Decimal((l - n) ** (k - b)) / Decimal(l ** (k - 1)))
 
 
-def calling_errors(b: int, p: float):
-    def binomial_pdf(p: float, n: int, k: int):
-        def binomial(n: int, k: int):
-            """n: int - Amount of bernoulli trials
-            k: int - Amount of successes
-            """
-            return factorial(n) / (factorial(k) * factorial(n - k))
-        return binomial(n, k) * (p ** k) * ((1 - p) ** (n - k))
+def calling_errors(b: int, p: float) -> float:
+    def multinomial_pdf(c: int, e1: int, e2: int, e3: int, p: float) -> float:
+        def pre(c: int, e1: int, e2: int, e3: int):
+            return (factorial(c + e1 + e2 + e3)) / (factorial(c) * factorial(e1) * factorial(e2) * factorial(e2))
+        return pre(c, e1, e2, e3) * (1 - p)**c * (p / 3)**(e1 + e2 + e3)
+
+    def parameters_crawler(m: (int, int), b: int, p: float):
+        c = 0
+        if m[0] == m[1]:
+            yield multinomial_pdf(m[0], m[1], m[1], m[1], p) / 4
+        while true:
+            if ()
+        yield (m[0], m[1], m[1], m[1])
+
+
+    mode = (floor((b + 1) * (1 - p)), floor((b + 1) * p))
 
     if b % 2 == 0:
         yield 0.5 * binomial_pdf(p, b, b/2)
